@@ -1,73 +1,102 @@
+
+/* ─── Base (identical to original) ───────────────────────────────────────── */
 html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-   font-family: "Iosevka Charon", monospace;
+    font-family: "Iosevka Charon", monospace;
     background: #FFFFFF;
-    color: #111827; 
+    color: #111827;
+    transition: background 0.3s ease, color 0.3s ease;
 }
-
-
+ 
+/* ─── Header (identical to original) ─────────────────────────────────────── */
 header {
-    width: 100%; 
-    min-height: 208px; 
+    width: 100%;
+    min-height: 208px;
     background: #0E0E0E;
     color: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+ 
 .header-container {
     width: 100%;
-    max-width: 550px; 
+    max-width: 550px;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
+ 
 .header-container h1 {
     font-size: 2rem;
     margin: 0;
 }
-
+ 
+nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+ 
 .nav-link {
     color: #FFFFFF;
     text-decoration: none;
     font-weight: 600;
 }
-
+ 
 .nav-link:hover {
     text-decoration: underline;
 }
-
-
+ 
+/* ─── New: theme toggle button ────────────────────────────────────────────── */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 20px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+ 
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+ 
+/* ─── Main container (identical to original) ──────────────────────────────── */
 .main-container {
-    max-width: 550px; 
-    margin: 0 auto;   
+    max-width: 550px;
+    margin: 0 auto;
     padding: 20px;
 }
-
+ 
+/* ─── Search form (identical to original) ─────────────────────────────────── */
 .search-form {
     display: flex;
     width: 100%;
-    height: 38px; 
+    height: 38px;
     border-radius: 6px;
     border: 1px solid #D1D5DB;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
-    overflow: hidden; 
+    overflow: hidden;
     margin-bottom: 30px;
 }
-
+ 
 .search-form input {
-    flex-grow: 1; 
+    flex-grow: 1;
     border: none;
     padding: 0 12px;
     font-size: 0.95rem;
     outline: none;
+    font-family: "Iosevka Charon", monospace;
+    background: transparent;
+    color: inherit;
 }
-
+ 
 .search-form button {
     background: #F3F4F6;
     border: none;
@@ -75,53 +104,73 @@ header {
     padding: 0 16px;
     font-weight: 600;
     cursor: pointer;
+    font-family: "Iosevka Charon", monospace;
+    transition: background 0.2s;
 }
-
+ 
 .search-form button:hover {
     background: #E5E7EB;
 }
-
-
+ 
+/* ─── Movies container (identical to original) ────────────────────────────── */
 .movies-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px; 
+    gap: 30px;
     margin-top: 20px;
 }
-
+ 
+/* ─── Movie card (identical to original) ─────────────────────────────────── */
 .movie-card {
     display: flex;
     gap: 20px;
     padding-bottom: 25px;
-    border-bottom: 1.5px solid #E5E7EB; 
+    border-bottom: 1.5px solid #E5E7EB;
 }
-
+ 
 .movie-poster {
     width: 100px;
-    height: 147px; 
+    height: 147px;
     object-fit: cover;
     border-radius: 4px;
-    background-color: #E5E7EB; 
+    background-color: #E5E7EB;
+    flex-shrink: 0;
 }
-
+ 
 .movie-info {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
-
+ 
 .movie-info h3 {
     margin: 0 0 8px 0;
     font-size: 1.25rem;
 }
-
+ 
+/* ─── Movie meta (identical to original) ─────────────────────────────────── */
 .movie-year {
     margin: 0 0 12px 0;
     color: #6B7280;
     font-size: 0.9rem;
 }
-
+ 
+/* ─── New: watchlist-specific meta ───────────────────────────────────────── */
+.movie-runtime {
+    margin: 0 0 8px 0;
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+ 
+.movie-plot {
+    margin: 0 0 14px 0;
+    color: #374151;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+ 
+/* ─── Add to watchlist button (identical to original) ────────────────────── */
 .add-to-watchlist-btn {
     align-self: flex-start;
     background: none;
@@ -130,15 +179,160 @@ header {
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;
+    font-family: "Iosevka Charon", monospace;
+    font-size: 0.9rem;
+    color: inherit;
+    transition: background 0.2s;
 }
-
+ 
 .add-to-watchlist-btn:hover {
     background-color: #F3F4F6;
 }
-
+ 
+/* ─── New: remove button ──────────────────────────────────────────────────── */
+.remove-btn {
+    align-self: flex-start;
+    background: none;
+    border: 1px solid #E5E7EB;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: "Iosevka Charon", monospace;
+    font-size: 0.85rem;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s;
+}
+ 
+.remove-btn:hover {
+    background: #FEE2E2;
+    border-color: #FCA5A5;
+    color: #991B1B;
+}
+ 
+/* ─── Recommendations heading (identical to original) ────────────────────── */
 .recommendations-heading {
     font-size: 1.25rem;
-    color: #6B7280; 
+    color: #6B7280;
     margin-bottom: 10px;
+    margin-top: 0;
     font-weight: 600;
+}
+ 
+/* ─── New: state messages ─────────────────────────────────────────────────── */
+.loading-text {
+    color: #6B7280;
+    font-size: 0.95rem;
+    margin: 0;
+}
+ 
+.error-text {
+    color: #6B7280;
+    font-size: 0.95rem;
+    margin: 0;
+}
+ 
+/* ─── New: empty watchlist state ─────────────────────────────────────────── */
+.empty-watchlist {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6B7280;
+}
+ 
+.empty-watchlist p {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+}
+ 
+.add-movies-btn {
+    display: inline-block;
+    background: #111827;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+ 
+.add-movies-btn:hover {
+    background: #374151;
+}
+ 
+/* ─── Dark mode ───────────────────────────────────────────────────────────── */
+/* Activates automatically at night (7pm–6am) via JS, or manually via toggle */
+ 
+body.dark-mode {
+    background: #111827;
+    color: #F9FAFB;
+}
+ 
+body.dark-mode .search-form {
+    border-color: #374151;
+    background: #1F2937;
+}
+ 
+body.dark-mode .search-form input {
+    background: #1F2937;
+    color: #F9FAFB;
+}
+ 
+body.dark-mode .search-form input::placeholder {
+    color: #6B7280;
+}
+ 
+body.dark-mode .search-form button {
+    background: #374151;
+    color: #F9FAFB;
+    border-left-color: #4B5563;
+}
+ 
+body.dark-mode .search-form button:hover {
+    background: #4B5563;
+}
+ 
+body.dark-mode .movie-card {
+    border-bottom-color: #1F2937;
+}
+ 
+body.dark-mode .movie-poster {
+    background-color: #1F2937;
+}
+ 
+body.dark-mode .movie-year,
+body.dark-mode .movie-runtime,
+body.dark-mode .recommendations-heading,
+body.dark-mode .loading-text,
+body.dark-mode .error-text,
+body.dark-mode .empty-watchlist {
+    color: #9CA3AF;
+}
+ 
+body.dark-mode .movie-plot {
+    color: #D1D5DB;
+}
+ 
+body.dark-mode .add-to-watchlist-btn:hover {
+    background-color: #1F2937;
+}
+ 
+body.dark-mode .remove-btn {
+    border-color: #374151;
+    color: #F9FAFB;
+}
+ 
+body.dark-mode .remove-btn:hover {
+    background: #7F1D1D;
+    border-color: #991B1B;
+    color: #FEE2E2;
+}
+ 
+body.dark-mode .add-movies-btn {
+    background: #F9FAFB;
+    color: #111827;
+}
+ 
+body.dark-mode .add-movies-btn:hover {
+    background: #E5E7EB;
 }
