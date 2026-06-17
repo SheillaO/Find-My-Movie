@@ -1,0 +1,118 @@
+const searchForm = document.getElementById("search-form");
+const searchInput = document.getElementById("search-input");
+const moviesContainer = document.getElementById("movies-container");
+
+
+const OMDB_API_KEY = "325e717d";
+
+
+let watchlist = JSON.parse(localStorage.getItem("movieWatchlist")) || [];
+
+
+async function loadRecommendations() {
+  moviesContainer.innerHTML = `
+        <h2 class="recommendations-heading">Recommended for You:</h2>
+        <div id="recommendations-grid" class="movies-container"></div>
+    `;
+  const grid = document.getElementById("recommendations-grid");
+
+  // IDs for: South Park, The Boys, Tacoma FD, The Prince, Crash Landing on You
+  const favShowIds = [
+    "tt0121955",
+    "tt1190634",
+    "tt8026448",
+    "tt11650736",
+    "tt10975034",
+  ];
+
+  for (let id of favShowIds) {
+    
+    const response = await fetch(`https://omdbapi.com{OMDB_API_KEY}&i=${id}`);
+    const movie = await response.json();
+
+   
+    const isAdded = watchlist.includes(movie.imdbID);
+    const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
+    const btnStyle = isAdded
+      ? 'style="background-color: #4caf50; color: white;"'
+      : "";
+    const btnDisabled = isAdded ? "disabled" : "";
+
+    grid.innerHTML += `
+            <div class="movie-card">
+                <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
+                <div class="movie-info">
+                    <h3>${movie.Title}</h3>
+                    <p class="movie-year">Released: ${movie.Year}</p>
+                    <button class="add-to-watchlist-btn" data-id="${movie.imdbID}" ${btnDisabled} ${btnStyle}>
+                        ${btnText}
+                    </button>
+                </div>
+            </div>
+        `;
+  }
+}
+
+
+searchForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const userQuery = searchInput.value.trim();
+  if (!userQuery) return;
+
+ 
+  moviesContainer.innerHTML = `<p class="loading-text">Searching database...</p>`;
+
+  // Corrected URL structure using your key for keyword searches (?s=)
+  const response = await fetch(
+    `https://omdbapi.com{OMDB_API_KEY}&s=${userQuery}`,
+  );
+  const data = await response.json();
+
+  if (data.Response === "True") {
+    moviesContainer.innerHTML = "";
+
+    for (let movie of data.Search) {
+      const isAdded = watchlist.includes(movie.imdbID);
+      const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
+      const btnStyle = isAdded
+        ? 'style="background-color: #4caf50; color: white;"'
+        : "";
+      const btnDisabled = isAdded ? "disabled" : "";
+
+      moviesContainer.innerHTML += `
+                <div class="movie-card">
+                    <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
+                    <div class="movie-info">
+                        <h3>${movie.Title}</h3>
+                        <p class="movie-year">Released: ${movie.Year}</p>
+                        <button class="add-to-watchlist-btn" data-id="${movie.imdbID}" ${btnDisabled} ${btnStyle}>
+                            ${btnText}
+                    </button>
+                    </div>
+                </div>
+            `;
+    }
+  } else {
+    moviesContainer.innerHTML = `<p class="error-text">No results found for "${userQuery}". Try another search!</p>`;
+  }
+});
+
+
+moviesContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("add-to-watchlist-btn")) {
+    const targetMovieId = e.target.dataset.id;
+
+    if (!watchlist.includes(targetMovieId)) {
+      watchlist.push(targetMovieId);
+      localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
+
+      e.target.textContent = "✓ Added";
+      e.target.disabled = true;
+      e.target.style.backgroundColor = "#4caf50";
+      e.target.style.color = "white";
+    }
+  }
+});
+
+
+loadRecommendations();
