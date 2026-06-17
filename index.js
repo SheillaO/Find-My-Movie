@@ -117,4 +117,28 @@ searchForm.addEventListener("submit", async function (e) {
                     </div>
                 </div>
             `;
-        }     
+        }   
+        else {
+        moviesContainer.innerHTML = `<p class="error-text">No results found for "${userQuery}". Try another search!</p>`;
+    }
+});
+ 
+ 
+// ─── Add to watchlist (identical to original) ─────────────────────────────────
+moviesContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("add-to-watchlist-btn")) {
+        const targetMovieId = e.target.dataset.id;
+ 
+        if (!watchlist.includes(targetMovieId)) {
+            watchlist.push(targetMovieId);
+            localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
+ 
+            e.target.textContent = "✓ Added";
+            e.target.disabled = true;
+            e.target.style.backgroundColor = "#4caf50";
+            e.target.style.color = "white";
+        }
+    }
+});  
+
+loadRecommendations();
