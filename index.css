@@ -123,10 +123,25 @@ nav {
  
 /* ─── Movie card (identical to original) ─────────────────────────────────── */
 .movie-card {
-    display: flex;
-    gap: 20px;
-    padding-bottom: 25px;
-    border-bottom: 1.5px solid #E5E7EB;
+    border-radius: 6px;
+    padding: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.movie-card:hover {
+    background-color: #F9FAFB;
+}
+
+body.dark-mode .movie-card:hover {
+    background-color: #1F2937;
+}
+
+.movie-poster {
+    transition: transform 0.25s ease;
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.05);
 }
  
 .movie-poster {
@@ -168,6 +183,12 @@ nav {
     color: #374151;
     font-size: 0.9rem;
     line-height: 1.5;
+}
+
+.greeting-text {
+    color: #6B7280;
+    font-size: 0.95rem;
+    margin: 0 0 16px 0;
 }
  
 /* ─── Add to watchlist button (identical to original) ────────────────────── */
@@ -259,12 +280,30 @@ nav {
 .add-movies-btn:hover {
     background: #374151;
 }
+
+/* NEW: Netflix-style match badge, your own gold accent instead of their red */
+.match-badge {
+    display: inline-block;
+    background: #E8B33D;
+    color: #111827;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 0 0 8px 0;
+}
+
+.match-badge:empty {
+    display: none; /* hides itself when there's no rating data */
+}
+
+
  
 /* ─── Dark mode ───────────────────────────────────────────────────────────── */
 /* Activates automatically at night (7pm–6am) via JS, or manually via toggle */
  
 body.dark-mode {
-    background: #111827;
+     background: #141414;
     color: #F9FAFB;
 }
  
@@ -305,7 +344,8 @@ body.dark-mode .movie-runtime,
 body.dark-mode .recommendations-heading,
 body.dark-mode .loading-text,
 body.dark-mode .error-text,
-body.dark-mode .empty-watchlist {
+body.dark-mode .empty-watchlist,
+body.dark-mode .greeting-text {
     color: #9CA3AF;
 }
  

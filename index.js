@@ -67,12 +67,18 @@ async function loadRecommendations() {
       : "";
     const btnDisabled = isAdded ? "disabled" : "";
 
+    const matchScore =
+      movie.imdbRating && movie.imdbRating !== "N/A"
+        ? `${Math.round(movie.imdbRating * 10)}% Match`
+        : "";
+
     grid.innerHTML += `
             <div class="movie-card">
                 <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
                 <div class="movie-info">
                     <h3>${movie.Title}</h3>
                     <p class="movie-year">Released: ${movie.Year}</p>
+                    <p class="match-badge">${matchScore}</p>
                     <button class="add-to-watchlist-btn" data-id="${movie.imdbID}" ${btnDisabled} ${btnStyle}>
                         ${btnText}
                     </button>
@@ -142,3 +148,20 @@ moviesContainer.addEventListener("click", function (e) {
 });  
 
 loadRecommendations();
+
+// NEW: greeting message based on time of day
+function showGreeting() {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById("greeting");
+  if (!greetingEl) return;
+
+  if (hour >= 6 && hour < 12) {
+    greetingEl.textContent = "☀️ Good morning — something light to start the day?";
+  } else if (hour >= 12 && hour < 19) {
+    greetingEl.textContent = "🎬 Good afternoon — here's what's worth your time.";
+  } else {
+    greetingEl.textContent = "🌙 Good evening — perfect time to settle in.";
+  }
+}
+
+showGreeting(); // NEW: call it

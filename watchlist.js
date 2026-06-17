@@ -59,11 +59,18 @@ async function renderWatchlist() {
 
     if (movieData.Response === "False") continue;
 
+    // NEW: same match score logic
+    const matchScore =
+      movieData.imdbRating && movieData.imdbRating !== "N/A"
+        ? `${Math.round(movieData.imdbRating * 10)}% Match`
+        : "";
+
     htmlContent += `
             <div class="movie-card">
                 <img src="${movieData.Poster}" class="movie-poster" alt="${movieData.Title} poster" />
                 <div class="movie-info">
                     <h3>${movieData.Title}</h3>
+                    <p class="match-badge">${matchScore}</p> 
                     <p class="movie-runtime">Runtime: ${movieData.Runtime} | Rating: ⭐ ${movieData.imdbRating}</p>
                     <p class="movie-plot">${movieData.Plot}</p>
                     <button class="remove-btn" data-id="${movieData.imdbID}">🗑️ Remove</button>
@@ -85,3 +92,20 @@ watchlistContainer.addEventListener("click", function (e) {
 });
 
 renderWatchlist();  
+
+// NEW: greeting message based on time of day
+function showGreeting() {
+  const hour = new Date().getHours();
+  const greetingEl = document.getElementById("greeting");
+  if (!greetingEl) return;
+
+  if (hour >= 6 && hour < 12) {
+    greetingEl.textContent = "☀️ Good morning — something light to start the day?";
+  } else if (hour >= 12 && hour < 19) {
+    greetingEl.textContent = "🎬 Good afternoon — here's what's worth your time.";
+  } else {
+    greetingEl.textContent = "🌙 Good evening — perfect time to settle in.";
+  }
+}
+
+showGreeting(); // NEW: call it
