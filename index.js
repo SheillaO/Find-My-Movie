@@ -101,7 +101,7 @@ searchForm.addEventListener("submit", async function (e) {
         for (let movie of data.Search) {
             const isAdded = watchlist.includes(movie.imdbID);
 
-           const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
+            const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
             const btnStyle = isAdded ? 'style="background-color: #4caf50; color: white;"' : "";
             const btnDisabled = isAdded ? "disabled" : "";
  
@@ -117,8 +117,8 @@ searchForm.addEventListener("submit", async function (e) {
                     </div>
                 </div>
             `;
-        }   
-        else {
+        }
+    } else {
         moviesContainer.innerHTML = `<p class="error-text">No results found for "${userQuery}". Try another search!</p>`;
     }
 });
