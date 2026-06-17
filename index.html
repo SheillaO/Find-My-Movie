@@ -9,38 +9,19 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Iosevka+Charon:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
-        <link rel="stylesheet" href="index.css">
-        <title>Find Your Movie</title>
-    </head>
-    
-    <body>
-    
-        <header>
-            <div class="header-container">
-                <h1>Find Your Movie</h1>
-                <nav>
-    
-                    <a href="WatchList.html" class="nav-link">My Watchlist</a>
-                </nav>
-            </div>
-        </header>
-    
-        <main class="main-container">
-            <!--search inputs -->
-            <form id="search-form" class="search-form">
-                <input type="text" id="search-input" placeholder="Search for a movie title... (e.g. Batman, Inception)"
-                    required>
-                <button type="submit" id="search-btn">Search</button>
-            </form>
-    
-            
-            <div id="movies-container" class="movies-container">
-               
-            </div>
-        </main>
-    
-      
-        <script src="index.js"></script>
-    </body>
-    
-    </html>
+    <link rel="stylesheet" href="index.css">
+    <title>Find Your Movie</title>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <h1>Find Your Movie</h1>
+            <nav>
+                <!-- New: time-based theme toggle -->
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle theme">🌙</button>
+                <a href="WatchList.html" class="nav-link">My Watchlist</a>
+            </nav>
+        </div>
+    </header>
