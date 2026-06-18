@@ -6,10 +6,6 @@ const OMDB_API_KEY = "325e717d";
 
 let watchlist = JSON.parse(localStorage.getItem("movieWatchlist")) || [];
 
-// ─── Time-based theme ─────────────────────────────────────────────────────────
-// Automatically applies dark mode at night (7pm–6am) and light mode during the day.
-// The toggle button lets the user override it manually at any time.
-
 function updateToggleBtn() {
   const btn = document.getElementById("theme-toggle");
   if (!btn) return;
@@ -18,7 +14,7 @@ function updateToggleBtn() {
 
 function applyTimeBasedTheme() {
   const hour = new Date().getHours();
-  const isDaytime = hour >= 6 && hour < 19; // 6am to 7pm = light mode
+  const isDaytime = hour >= 6 && hour < 19;
   if (isDaytime) {
     document.body.classList.remove("dark-mode");
   } else {
@@ -34,7 +30,6 @@ document.getElementById("theme-toggle").addEventListener("click", function () {
 
 applyTimeBasedTheme();
 
-// ─── Recommendations (identical to original, API URL fixed) ──────────────────
 async function loadRecommendations() {
   moviesContainer.innerHTML = `
         <h2 class="recommendations-heading">Recommended for You</h2>
@@ -64,7 +59,7 @@ async function loadRecommendations() {
     "tt0275140",
   ];
 
-  let isFirstCard = true; // NEW: tracks which card is the "top pick"
+  let isFirstCard = true;
 
   for (let id of favShowIds) {
     const response = await fetch(
@@ -86,9 +81,6 @@ async function loadRecommendations() {
         ? `${Math.round(movie.imdbRating * 10)}% Match`
         : "";
 
-    // NEW: sets the blurred backdrop using the top pick's poster
-   
-    // NEW: only the very first card gets the red tag
     const featuredTag = isFirstCard
       ? `<span class="featured-tag">🔥 Top Pick</span>`
       : "";
@@ -98,8 +90,6 @@ async function loadRecommendations() {
     }
 
     isFirstCard = false;
-
-    
 
     grid.innerHTML += `
         <div class="movie-card">
@@ -117,10 +107,8 @@ async function loadRecommendations() {
         </div>
     `;
   }
-
 }
 
-// ─── Search (identical to original, API URL fixed) ────────────────────────────
 searchForm.addEventListener("submit", async function (e) {
   e.preventDefault();
   const userQuery = searchInput.value.trim();
@@ -163,7 +151,6 @@ searchForm.addEventListener("submit", async function (e) {
   }
 });
 
-// ─── Add to watchlist (identical to original) ─────────────────────────────────
 moviesContainer.addEventListener("click", function (e) {
   if (e.target.classList.contains("add-to-watchlist-btn")) {
     const targetMovieId = e.target.dataset.id;
@@ -182,7 +169,6 @@ moviesContainer.addEventListener("click", function (e) {
 
 loadRecommendations();
 
-// NEW: greeting message based on time of day
 function showGreeting() {
   const hour = new Date().getHours();
   const greetingEl = document.getElementById("greeting");
@@ -199,4 +185,4 @@ function showGreeting() {
   }
 }
 
-showGreeting(); // NEW: call it
+showGreeting();

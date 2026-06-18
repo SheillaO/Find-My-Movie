@@ -1,16 +1,35 @@
 
-/* ─── Base (identical to original) ───────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box; 
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: "Iosevka Charon", monospace;
     background: #FFFFFF;
     color: #111827;
     transition: background 0.3s ease, color 0.3s ease;
+
+    --ambient-glow: none; 
 }
- 
-/* ─── Header (identical to original) ─────────────────────────────────────── */
+
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--ambient-glow, none);
+    background-size: cover;
+    background-position: center top;
+    filter: blur(70px) brightness(0.5);
+    opacity: 0.3;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+
 header {
     width: 100%;
     min-height: 208px;
@@ -51,7 +70,6 @@ nav {
     text-decoration: underline;
 }
  
-/* ─── New: theme toggle button ────────────────────────────────────────────── */
 .theme-toggle-btn {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -66,15 +84,19 @@ nav {
 .theme-toggle-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
- 
-/* ─── Main container (identical to original) ──────────────────────────────── */
+
 .main-container {
     max-width: 550px;
     margin: 0 auto;
     padding: 20px;
 }
+
+.greeting-text {
+    color: #6B7280;
+    font-size: 0.95rem;
+    margin: 0 0 16px 0;
+}
  
-/* ─── Search form (identical to original) ─────────────────────────────────── */
 .search-form {
     display: flex;
     width: 100%;
@@ -84,6 +106,7 @@ nav {
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     margin-bottom: 30px;
+    background: #FFFFFF; 
 }
  
 .search-form input {
@@ -105,14 +128,14 @@ nav {
     font-weight: 600;
     cursor: pointer;
     font-family: "Iosevka Charon", monospace;
+    color: #111827;
     transition: background 0.2s;
 }
  
 .search-form button:hover {
     background: #E5E7EB;
 }
- 
-/* ─── Movies container (identical to original) ────────────────────────────── */
+
 .movies-container {
     width: 100%;
     display: flex;
@@ -121,43 +144,34 @@ nav {
     margin-top: 20px;
 }
  
-/* ─── Movie card (identical to original) ─────────────────────────────────── */
 .movie-card {
-    display: flex;        /* RESTORED — this was dropped */
+    display: flex;        
     gap: 20px;  
     border-radius: 6px;
     padding: 8px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .movie-card:hover {
     background-color: #F9FAFB;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10); 
 }
-
-body.dark-mode .movie-card:hover {
-    background-color: #1F2937;
-}
-
  
 .movie-poster {
-    width: 110px;       /* was 100px */
-    height: 163px;       /* was 147px */
+    width: 110px;       
+    height: 163px;       
     object-fit: cover;
     border-radius: 4px;
     background-color: #E5E7EB;
-    flex-shrink: 0;
+    flex-shrink: 0; 
     transition: transform 0.25s ease;
 }
 
-.movie-card:hover {
-    background-color: #F9FAFB;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.10); /* NEW: subtle lift on hover */
-}
- 
 .movie-info {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    min-width: 0; 
 }
  
 .movie-info h3 {
@@ -165,14 +179,12 @@ body.dark-mode .movie-card:hover {
     font-size: 1.25rem;
 }
  
-/* ─── Movie meta (identical to original) ─────────────────────────────────── */
 .movie-year {
     margin: 0 0 12px 0;
     color: #6B7280;
     font-size: 0.9rem;
 }
  
-/* ─── New: watchlist-specific meta ───────────────────────────────────────── */
 .movie-runtime {
     margin: 0 0 8px 0;
     color: #6B7280;
@@ -186,13 +198,42 @@ body.dark-mode .movie-card:hover {
     line-height: 1.5;
 }
 
-.greeting-text {
-    color: #6B7280;
-    font-size: 0.95rem;
-    margin: 0 0 16px 0;
+
+.featured-tag {
+    display: inline-block;
+    background: #B20710;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    width: max-content;
 }
- 
-/* ─── Add to watchlist button (identical to original) ────────────────────── */
+
+.featured-tag:empty {
+    display: none;
+}
+
+.match-badge {
+    display: inline-block;
+    background: #E8B33D;
+    color: #111827;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 0 0 8px 0;
+    width: max-content;
+}
+
+.match-badge:empty {
+    display: none; 
+}
+
+
 .add-to-watchlist-btn {
     align-self: flex-start;
     background: none;
@@ -210,8 +251,12 @@ body.dark-mode .movie-card:hover {
 .add-to-watchlist-btn:hover {
     background-color: #F3F4F6;
 }
+
+.add-to-watchlist-btn:disabled {
+    color: #FFFFFF !important; 
+    cursor: default;
+}
  
-/* ─── New: remove button ──────────────────────────────────────────────────── */
 .remove-btn {
     align-self: flex-start;
     background: none;
@@ -223,7 +268,7 @@ body.dark-mode .movie-card:hover {
     font-family: "Iosevka Charon", monospace;
     font-size: 0.85rem;
     color: inherit;
-    transition: background 0.2s, border-color 0.2s;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
  
 .remove-btn:hover {
@@ -231,8 +276,8 @@ body.dark-mode .movie-card:hover {
     border-color: #FCA5A5;
     color: #991B1B;
 }
- 
-/* ─── Recommendations heading (identical to original) ────────────────────── */
+
+
 .recommendations-heading {
     font-size: 1.25rem;
     color: #6B7280;
@@ -241,35 +286,12 @@ body.dark-mode .movie-card:hover {
     font-weight: 600;
 }
 
-/* NEW: ambient blurred backdrop — optional, test this one */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: var(--ambient-glow, none);
-    background-size: cover;
-    background-position: center top;
-    filter: blur(70px) brightness(0.5);
-    opacity: 0.3;
-    z-index: -1;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-}
- 
-/* ─── New: state messages ─────────────────────────────────────────────────── */
-.loading-text {
+.loading-text, .error-text {
     color: #6B7280;
     font-size: 0.95rem;
     margin: 0;
 }
  
-.error-text {
-    color: #6B7280;
-    font-size: 0.95rem;
-    margin: 0;
-}
- 
-/* ─── New: empty watchlist state ─────────────────────────────────────────── */
 .empty-watchlist {
     text-align: center;
     padding: 60px 20px;
@@ -297,43 +319,19 @@ body::before {
     background: #374151;
 }
 
-.featured-tag {
-    display: inline-block;
-    background: #B20710;
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 3px 8px;
-    border-radius: 3px;
-    margin-bottom: 6px;
-}
 
-/* NEW: Netflix-style match badge, your own gold accent instead of their red */
-.match-badge {
-    display: inline-block;
-    background: #E8B33D;
-    color: #111827;
-    font-weight: 700;
-    font-size: 0.8rem;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin: 0 0 8px 0;
-}
-
-.match-badge:empty {
-    display: none; /* hides itself when there's no rating data */
-}
-
-
- 
-/* ─── Dark mode ───────────────────────────────────────────────────────────── */
-/* Activates automatically at night (7pm–6am) via JS, or manually via toggle */
- 
 body.dark-mode {
-     background: #141414;
+    background: #141414;
     color: #F9FAFB;
+}
+
+body.dark-mode::before {
+    filter: blur(70px) brightness(0.3); 
+}
+
+body.dark-mode .movie-card:hover {
+    background-color: #1F2937;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.40); 
 }
  
 body.dark-mode .search-form {
