@@ -39,11 +39,11 @@ async function loadRecommendations() {
 
   // IDs for: South Park, The Boys, Tacoma FD, The Prince, Crash Landing on You
   const favShowIds = [
-    "tt0121955",
-    "tt1190634",
-    "tt8026448",
-    "tt11650736",
-    "tt10850932",
+    "tt0121955", // South Park
+    "tt1190634", // The Boys
+    "tt8026448", // Tacoma FD
+    "tt11650736", // The Prince
+    "tt10850932", // Crash Landing on You
     "tt14596414",
     "tt14671678",
     "tt27846061",
@@ -53,11 +53,9 @@ async function loadRecommendations() {
     "tt10850864",
     "tt0131179",
     "tt1796960",
-    "tt39184653",
     "tt3498820",
     "tt0203259",
     "tt0275140",
-    "tt10970762", // The Testaments
     "tt0903747", // Breaking Bad
     "tt0944947", // Game of Thrones
     "tt0386676", // The Office (US)
@@ -67,17 +65,16 @@ async function loadRecommendations() {
     "tt3530232", // Last Week Tonight with John Oliver
     "tt0264235", // Curb Your Enthusiasm
     "tt2707408",
-    "tt1421870",
+    "tt1421870", // Severance
     "tt12565772", // The Bear
     "tt11126994", // Arcane
     "tt4786824", // The Crown
     "tt2582846", // Better Call Saul
-    "tt1421870",
     "tt2560140", // Attack on Titan
     "tt22248376", // Frieren: Beyond Journey's End
     "tt10233448", // Vinland Saga
     "tt12343534", // Jujutsu Kaisen
-    "tt11126994", // Cyberpunk: Edgerunners
+    "tt16361634", // Cyberpunk: Edgerunners (Fixed ID)
   ];
 
   let isFirstCard = true;
