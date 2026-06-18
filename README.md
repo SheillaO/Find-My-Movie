@@ -2,6 +2,15 @@
 
 **A movie discovery app that fights decision fatigue instead of feeding it — built on the idea that recommendation engines should optimize for *your* taste, not for engagement metrics.**
 
+
+<img width="1392" height="852" alt="Movie" src="https://github.com/user-attachments/assets/e9fab5cb-f5c8-4c7f-ae58-5b03529c0df8" />
+
+---
+
+🚀 Try It Now
+
+**🔗 Link:** findmyfilmhq.netlify.app
+
 ---
 
 ## Why This Matters
