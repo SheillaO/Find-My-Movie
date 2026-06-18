@@ -57,6 +57,27 @@ async function loadRecommendations() {
     "tt3498820",
     "tt0203259",
     "tt0275140",
+    "tt10970762", // The Testaments
+    "tt0903747", // Breaking Bad
+    "tt0944947", // Game of Thrones
+    "tt0386676", // The Office (US)
+    "tt0773262", // Dexter
+    "tt4934214", // Taskmaster (UK)
+    "tt2297757", // Nathan for You
+    "tt3530232", // Last Week Tonight with John Oliver
+    "tt0264235", // Curb Your Enthusiasm
+    "tt2707408",
+    "tt1421870",
+    "tt12565772", // The Bear
+    "tt11126994", // Arcane
+    "tt4786824", // The Crown
+    "tt2582846", // Better Call Saul
+    "tt1421870",
+    "tt2560140", // Attack on Titan
+    "tt22248376", // Frieren: Beyond Journey's End
+    "tt10233448", // Vinland Saga
+    "tt12343534", // Jujutsu Kaisen
+    "tt11126994", // Cyberpunk: Edgerunners
   ];
 
   let isFirstCard = true;

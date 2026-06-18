@@ -10,17 +10,7 @@ if (!watchlist || watchlist.length === 0) {
     "tt9813792",
     "tt0098904",
     "tt1266020",
-    "tt8962124",
-    "tt10970762", // The Testaments
-    "tt0903747", // Breaking Bad
-    "tt0944947", // Game of Thrones
-    "tt0386676", // The Office (US)
-    "tt0773262", // Dexter
-    "tt4934214", // Taskmaster (UK)
-    "tt2297757", // Nathan for You
-    "tt3530232", // Last Week Tonight with John Oliver
-    "tt0264235", // Curb Your Enthusiasm
-    "tt2707408",
+    "tt8962124"
   ];
   localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
 }
