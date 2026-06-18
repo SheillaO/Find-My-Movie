@@ -1,8 +1,9 @@
+const watchlistContainer = document.getElementById("watchlist-container");
 const OMDB_API_KEY = "325e717d";
 let watchlist = JSON.parse(localStorage.getItem("movieWatchlist"));
 
-
 if (!watchlist || watchlist.length === 0) {
+  // IDs for: Saturday Night Live, Desperate Housewives, FROM, Seinfeld, Parks and Rec
   watchlist = [
     "tt0072562",
     "tt0410975",
@@ -10,45 +11,24 @@ if (!watchlist || watchlist.length === 0) {
     "tt0098904",
     "tt1266020",
     "tt8962124",
-    "tt10970762",
-    "tt0903747",
-    "tt0944947",
-    "tt0386676",
-    "tt0773262",
-    "tt4934214",
-    "tt2297757",
-    "tt3530232",
-    "tt0264235",
+    "tt10970762", // The Testaments
+    "tt0903747", // Breaking Bad
+    "tt0944947", // Game of Thrones
+    "tt0386676", // The Office (US)
+    "tt0773262", // Dexter
+    "tt4934214", // Taskmaster (UK)
+    "tt2297757", // Nathan for You
+    "tt3530232", // Last Week Tonight with John Oliver
+    "tt0264235", // Curb Your Enthusiasm
     "tt2707408",
   ];
   localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
 }
 
-
-let watchlistContainer, themeToggleBtn;
-
-function init() {
-  watchlistContainer = document.getElementById("watchlist-container");
-  themeToggleBtn = document.getElementById("theme-toggle");
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", function () {
-      document.body.classList.toggle("dark-mode");
-      updateToggleBtn();
-    });
-  }
-
-  applyTimeBasedTheme();
-  showGreeting();
-  renderWatchlist();
-  setupWatchlistEvents();
-}
-
 function updateToggleBtn() {
-  if (!themeToggleBtn) return;
-  themeToggleBtn.textContent = document.body.classList.contains("dark-mode")
-    ? "☀️"
-    : "🌙";
+  const btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+  btn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
 }
 
 function applyTimeBasedTheme() {
@@ -62,87 +42,65 @@ function applyTimeBasedTheme() {
   updateToggleBtn();
 }
 
-async function renderWatchlist() {
-  if (!watchlistContainer) return;
+document.getElementById("theme-toggle").addEventListener("click", function () {
+  document.body.classList.toggle("dark-mode");
+  updateToggleBtn();
+});
 
+applyTimeBasedTheme();
+
+async function renderWatchlist() {
   if (watchlist.length === 0) {
-    displayEmptyState();
+    watchlistContainer.innerHTML = `
+            <div class="empty-watchlist">
+                <p>Your watchlist is looking a little empty...</p>
+                <a href="index.html" class="add-movies-btn">+ Let's add some movies</a>
+            </div>
+        `;
     return;
   }
-
   watchlistContainer.innerHTML = `<p class="loading-text">Loading your watchlist...</p>`;
+  let htmlContent = "";
 
-  try {
-    
-    const fetchPromises = watchlist.map((id) =>
-      fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`).then(
-        (res) => res.json(),
-      ),
+  for (let movieId of watchlist) {
+    const response = await fetch(
+      `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${movieId}`,
     );
-    const moviesData = await Promise.all(fetchPromises);
+    const movieData = await response.json();
 
-    let htmlContent = "";
+    if (movieData.Response === "False") continue;
 
-    for (let movieData of moviesData) {
-      if (!movieData || movieData.Response === "False") continue;
+    const matchScore =
+      movieData.imdbRating && movieData.imdbRating !== "N/A"
+        ? `${Math.round(movieData.imdbRating * 10)}% Match`
+        : "";
 
-      const matchScore =
-        movieData.imdbRating && movieData.imdbRating !== "N/A"
-          ? `${Math.round(movieData.imdbRating * 10)}% Match`
-          : "";
-
-      htmlContent += `
-        <div class="movie-card" data-card-id="${movieData.imdbID}">
-            <img src="${movieData.Poster}" class="movie-poster" alt="${movieData.Title} poster" />
-            <div class="movie-info">
-                <h3>${movieData.Title}</h3>
-                <p class="match-badge">${matchScore}</p> 
-                <p class="movie-runtime">Runtime: ${movieData.Runtime} | Rating: ⭐ ${movieData.imdbRating}</p>
-                <p class="movie-plot">${movieData.Plot}</p>
-                <button class="remove-btn" data-id="${movieData.imdbID}">🗑️ Remove</button>
+    htmlContent += `
+            <div class="movie-card">
+                <img src="${movieData.Poster}" class="movie-poster" alt="${movieData.Title} poster" />
+                <div class="movie-info">
+                    <h3>${movieData.Title}</h3>
+                    <p class="match-badge">${matchScore}</p> 
+                    <p class="movie-runtime">Runtime: ${movieData.Runtime} | Rating: ⭐ ${movieData.imdbRating}</p>
+                    <p class="movie-plot">${movieData.Plot}</p>
+                    <button class="remove-btn" data-id="${movieData.imdbID}">🗑️ Remove</button>
+                </div>
             </div>
-        </div>
-      `;
-    }
-    watchlistContainer.innerHTML = htmlContent;
-  } catch (err) {
-    console.error("Error loading watchlist details:", err);
-    watchlistContainer.innerHTML = `<p class="error-text">Failed to load items. Please refresh.</p>`;
+        `;
   }
+  watchlistContainer.innerHTML = htmlContent;
 }
 
-function displayEmptyState() {
-  watchlistContainer.innerHTML = `
-    <div class="empty-watchlist">
-        <p>Your watchlist is looking a little empty...</p>
-        <a href="index.html" class="add-movies-btn">+ Let's add some movies</a>
-    </div>
-  `;
-}
+watchlistContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("remove-btn")) {
+    const idToRemove = e.target.dataset.id;
+    watchlist = watchlist.filter((id) => id !== idToRemove);
+    localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
+    renderWatchlist();
+  }
+});
 
-function setupWatchlistEvents() {
-  if (!watchlistContainer) return;
-
-  watchlistContainer.addEventListener("click", function (e) {
-    if (e.target.classList.contains("remove-btn")) {
-      const idToRemove = e.target.dataset.id;
-
-      watchlist = watchlist.filter((id) => id !== idToRemove);
-      localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
-
-      
-      const card = e.target.closest(".movie-card");
-      if (card) {
-        card.remove();
-      }
-
-     
-      if (watchlist.length === 0) {
-        displayEmptyState();
-      }
-    }
-  });
-}
+renderWatchlist();
 
 function showGreeting() {
   const hour = new Date().getHours();
@@ -160,4 +118,4 @@ function showGreeting() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", init);
+showGreeting();
