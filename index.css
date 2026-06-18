@@ -123,6 +123,8 @@ nav {
  
 /* ─── Movie card (identical to original) ─────────────────────────────────── */
 .movie-card {
+    display: flex;        /* RESTORED — this was dropped */
+    gap: 20px;  
     border-radius: 6px;
     padding: 8px;
     transition: background-color 0.2s ease;
@@ -136,21 +138,20 @@ body.dark-mode .movie-card:hover {
     background-color: #1F2937;
 }
 
-.movie-poster {
-    transition: transform 0.25s ease;
-}
-
-.movie-card:hover .movie-poster {
-    transform: scale(1.05);
-}
  
 .movie-poster {
-    width: 100px;
-    height: 147px;
+    width: 110px;       /* was 100px */
+    height: 163px;       /* was 147px */
     object-fit: cover;
     border-radius: 4px;
     background-color: #E5E7EB;
     flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.movie-card:hover {
+    background-color: #F9FAFB;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.10); /* NEW: subtle lift on hover */
 }
  
 .movie-info {
@@ -239,6 +240,21 @@ body.dark-mode .movie-card:hover {
     margin-top: 0;
     font-weight: 600;
 }
+
+/* NEW: ambient blurred backdrop — optional, test this one */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: var(--ambient-glow, none);
+    background-size: cover;
+    background-position: center top;
+    filter: blur(70px) brightness(0.5);
+    opacity: 0.3;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
  
 /* ─── New: state messages ─────────────────────────────────────────────────── */
 .loading-text {
@@ -279,6 +295,19 @@ body.dark-mode .movie-card:hover {
  
 .add-movies-btn:hover {
     background: #374151;
+}
+
+.featured-tag {
+    display: inline-block;
+    background: #B20710;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
 }
 
 /* NEW: Netflix-style match badge, your own gold accent instead of their red */

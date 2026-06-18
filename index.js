@@ -33,8 +33,7 @@ document.getElementById("theme-toggle").addEventListener("click", function () {
 });
 
 applyTimeBasedTheme();
- 
- 
+
 // ─── Recommendations (identical to original, API URL fixed) ──────────────────
 async function loadRecommendations() {
   moviesContainer.innerHTML = `
@@ -49,8 +48,23 @@ async function loadRecommendations() {
     "tt1190634",
     "tt8026448",
     "tt11650736",
-    "tt10975034",
+    "tt10850932",
+    "tt14596414",
+    "tt14671678",
+    "tt27846061",
+    "tt33265684",
+    "tt30218039",
+    "tt38689878",
+    "tt10850864",
+    "tt0131179",
+    "tt1796960",
+    "tt39184653",
+    "tt3498820",
+    "tt0203259",
+    "tt0275140",
   ];
+
+  let isFirstCard = true; // NEW: tracks which card is the "top pick"
 
   for (let id of favShowIds) {
     const response = await fetch(
@@ -72,46 +86,66 @@ async function loadRecommendations() {
         ? `${Math.round(movie.imdbRating * 10)}% Match`
         : "";
 
+    // NEW: sets the blurred backdrop using the top pick's poster
+   
+    // NEW: only the very first card gets the red tag
+    const featuredTag = isFirstCard
+      ? `<span class="featured-tag">🔥 Top Pick</span>`
+      : "";
+
+    if (isFirstCard && movie.Poster && movie.Poster !== "N/A") {
+      document.body.style.setProperty("--ambient-glow", `url(${movie.Poster})`); // NEW
+    }
+
+    isFirstCard = false;
+
+    
+
     grid.innerHTML += `
-            <div class="movie-card">
-                <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
-                <div class="movie-info">
-                    <h3>${movie.Title}</h3>
-                    <p class="movie-year">Released: ${movie.Year}</p>
-                    <p class="match-badge">${matchScore}</p>
-                    <button class="add-to-watchlist-btn" data-id="${movie.imdbID}" ${btnDisabled} ${btnStyle}>
-                        ${btnText}
-                    </button>
-                </div>
+        <div class="movie-card">
+            <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
+            <div class="movie-info">
+                ${featuredTag}
+                <h3>${movie.Title}</h3>
+                <p class="movie-year">Released: ${movie.Year}</p>
+                <p class="match-badge">${matchScore}</p>
+                <p class="movie-plot">${movie.Plot}</p>
+                <button class="add-to-watchlist-btn" data-id="${movie.imdbID}" ${btnDisabled} ${btnStyle}>
+                    ${btnText}
+                </button>
             </div>
-        `;
+        </div>
+    `;
   }
+
 }
 
 // ─── Search (identical to original, API URL fixed) ────────────────────────────
 searchForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const userQuery = searchInput.value.trim();
-    if (!userQuery) return;
- 
-    moviesContainer.innerHTML = `<p class="loading-text">Searching database...</p>`;
- 
-    const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${userQuery}`
-    );
-    const data = await response.json();
- 
-    if (data.Response === "True") {
-        moviesContainer.innerHTML = "";
- 
-        for (let movie of data.Search) {
-            const isAdded = watchlist.includes(movie.imdbID);
+  e.preventDefault();
+  const userQuery = searchInput.value.trim();
+  if (!userQuery) return;
 
-            const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
-            const btnStyle = isAdded ? 'style="background-color: #4caf50; color: white;"' : "";
-            const btnDisabled = isAdded ? "disabled" : "";
- 
-            moviesContainer.innerHTML += `
+  moviesContainer.innerHTML = `<p class="loading-text">Searching database...</p>`;
+
+  const response = await fetch(
+    `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${userQuery}`,
+  );
+  const data = await response.json();
+
+  if (data.Response === "True") {
+    moviesContainer.innerHTML = "";
+
+    for (let movie of data.Search) {
+      const isAdded = watchlist.includes(movie.imdbID);
+
+      const btnText = isAdded ? "✓ Added" : "+ Add to Watchlist";
+      const btnStyle = isAdded
+        ? 'style="background-color: #4caf50; color: white;"'
+        : "";
+      const btnDisabled = isAdded ? "disabled" : "";
+
+      moviesContainer.innerHTML += `
                 <div class="movie-card">
                     <img src="${movie.Poster}" class="movie-poster" alt="${movie.Title} poster" />
                     <div class="movie-info">
@@ -123,29 +157,28 @@ searchForm.addEventListener("submit", async function (e) {
                     </div>
                 </div>
             `;
-        }
-    } else {
-        moviesContainer.innerHTML = `<p class="error-text">No results found for "${userQuery}". Try another search!</p>`;
     }
+  } else {
+    moviesContainer.innerHTML = `<p class="error-text">No results found for "${userQuery}". Try another search!</p>`;
+  }
 });
- 
- 
+
 // ─── Add to watchlist (identical to original) ─────────────────────────────────
 moviesContainer.addEventListener("click", function (e) {
-    if (e.target.classList.contains("add-to-watchlist-btn")) {
-        const targetMovieId = e.target.dataset.id;
- 
-        if (!watchlist.includes(targetMovieId)) {
-            watchlist.push(targetMovieId);
-            localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
- 
-            e.target.textContent = "✓ Added";
-            e.target.disabled = true;
-            e.target.style.backgroundColor = "#4caf50";
-            e.target.style.color = "white";
-        }
+  if (e.target.classList.contains("add-to-watchlist-btn")) {
+    const targetMovieId = e.target.dataset.id;
+
+    if (!watchlist.includes(targetMovieId)) {
+      watchlist.push(targetMovieId);
+      localStorage.setItem("movieWatchlist", JSON.stringify(watchlist));
+
+      e.target.textContent = "✓ Added";
+      e.target.disabled = true;
+      e.target.style.backgroundColor = "#4caf50";
+      e.target.style.color = "white";
     }
-});  
+  }
+});
 
 loadRecommendations();
 
@@ -156,9 +189,11 @@ function showGreeting() {
   if (!greetingEl) return;
 
   if (hour >= 6 && hour < 12) {
-    greetingEl.textContent = "☀️ Good morning — something light to start the day?";
+    greetingEl.textContent =
+      "☀️ Good morning — something light to start the day?";
   } else if (hour >= 12 && hour < 19) {
-    greetingEl.textContent = "🎬 Good afternoon — here's what's worth your time.";
+    greetingEl.textContent =
+      "🎬 Good afternoon — here's what's worth your time.";
   } else {
     greetingEl.textContent = "🌙 Good evening — perfect time to settle in.";
   }
