@@ -65,8 +65,6 @@ async function loadRecommendations() {
     "tt3530232", // Last Week Tonight with John Oliver
     "tt0264235", // Curb Your Enthusiasm
     "tt2707408",
-    "tt1421870", // Severance
-    "tt12565772", // The Bear
     "tt11126994", // Arcane
     "tt4786824", // The Crown
     "tt2582846", // Better Call Saul
